@@ -17,4 +17,6 @@ Route::group(['prefix' => 'admin'], function (Router $router) {
     $router->get('login', 'AuthController@showLoginForm')->name('admin.login');
     $router->post('login', 'AuthController@login');
     $router->get('logout', 'AuthController@logout')->name('admin.logout');
+
+    $router->resource('users', 'UserController');
 });
