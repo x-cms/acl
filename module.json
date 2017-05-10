@@ -1,0 +1,10 @@
+{
+    "alias": "acl",
+    "name": "Acl",
+    "author": "xcms",
+    "description": "This is the description for the Acl module.",
+    "namespace": "Xcms\\Acl",
+    "version": "1.0",
+    "autoload": "psr-4",
+    "enabled": true
+}
