@@ -3,6 +3,7 @@
 namespace Xcms\Acl\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Xcms\Acl\Http\DataTables\AdminDataTable;
 use Xcms\Base\Http\Controllers\SystemController;
 
 class UserController extends SystemController
@@ -12,13 +13,13 @@ class UserController extends SystemController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(AdminDataTable $adminDataTable)
     {
         $this->setPageTitle('管理员列表');
         $this->breadcrumbs->addLink('管理员');
         menu()->setActiveItem('users');
 
-        return view('acl::users.index');
+        return view('acl::users.index', compact('adminDataTable'));
     }
 
     /**
@@ -83,6 +84,11 @@ class UserController extends SystemController
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
+    {
+        //
+    }
+
+    public function updateStatus($id, $status)
     {
         //
     }
