@@ -18,8 +18,10 @@ class UserController extends SystemController
         $this->setPageTitle('管理员列表');
         $this->breadcrumbs->addLink('管理员');
         menu()->setActiveItem('users');
+        $dataTable = $adminDataTable->run();
+        $script = $adminDataTable->script();
 
-        return view('acl::users.index', compact('adminDataTable'));
+        return view('acl::users.index', compact('dataTable', 'script'));
     }
 
     /**
@@ -91,5 +93,9 @@ class UserController extends SystemController
     public function updateStatus($id, $status)
     {
         //
+    }
+
+    public function ajax(AdminDataTable $adminDataTable){
+        return $adminDataTable->ajax();
     }
 }

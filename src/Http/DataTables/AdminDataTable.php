@@ -22,8 +22,8 @@ class AdminDataTable extends AbstractDataTables
                 'title' => 'ID',
                 'width' => '5%',
             ],
-            'title' => [
-                'title' => 'Title',
+            'username' => [
+                'title' => 'Username',
                 'width' => '20%',
             ],
             'created_at' => [
@@ -41,7 +41,7 @@ class AdminDataTable extends AbstractDataTables
     {
         return [
             ['data' => 'id', 'name' => 'id', 'searchable' => false, 'orderable' => false],
-            ['data' => 'title', 'name' => 'title'],
+            ['data' => 'username', 'name' => 'title'],
             ['data' => 'created_at', 'name' => 'created_at'],
             ['data' => 'actions', 'name' => 'actions', 'searchable' => false, 'orderable' => false],
         ];
@@ -52,7 +52,7 @@ class AdminDataTable extends AbstractDataTables
      */
     public function run()
     {
-        $this->setAjaxUrl('fetch-data-url', 'POST');
+        $this->setAjaxUrl(route('users.ajax'), 'POST');
 
         $this
             ->addFilter(1, form()->text('title', '', [
