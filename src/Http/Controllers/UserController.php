@@ -4,6 +4,7 @@ namespace Xcms\Acl\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Xcms\Acl\Http\DataTables\AdminDataTable;
+use Xcms\Acl\Models\Admin;
 use Xcms\Base\Http\Controllers\SystemController;
 
 class UserController extends SystemController
@@ -11,17 +12,15 @@ class UserController extends SystemController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public function index(AdminDataTable $adminDataTable)
+    public function index()
     {
         $this->setPageTitle('管理员列表');
         $this->breadcrumbs->addLink('管理员');
         menu()->setActiveItem('users');
-        $dataTable = $adminDataTable->run();
-        $script = $adminDataTable->script();
 
-        return view('acl::users.index', compact('dataTable', 'script'));
+        return view('acl::users.index');
     }
 
     /**
@@ -95,7 +94,7 @@ class UserController extends SystemController
         //
     }
 
-    public function ajax(AdminDataTable $adminDataTable){
-        return $adminDataTable->ajax();
+    public function ajax(){
+        return Admin::all()->toJson();
     }
 }

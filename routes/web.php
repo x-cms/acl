@@ -19,7 +19,7 @@ Route::group(['prefix' => 'admin'], function (Router $router) {
     $router->get('logout', 'AuthController@logout')->name('admin.logout');
 
     $router->resource('users', 'UserController');
-    $router->post('users', 'UserController@ajax')->name('users.ajax');
+    $router->post('users/ajax', 'UserController@ajax')->name('users.ajax');
     $router->post('users/update-status/{id}/{status}', 'UserController@updateStatus')->name('users.update-status');
 
 
