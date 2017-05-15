@@ -22,5 +22,9 @@ Route::group(['prefix' => 'admin'], function (Router $router) {
     $router->post('users/ajax', 'UserController@ajax')->name('users.ajax');
     $router->post('users/update-status/{id}/{status}', 'UserController@updateStatus')->name('users.update-status');
 
+    $router->resource('roles', 'RoleController');
+    $router->post('roles/ajax', 'RoleController@ajax')->name('roles.ajax');
 
+    $router->resource('permissions', 'PermissionController');
+    $router->post('permissions/ajax', 'PermissionController@ajax')->name('permissions.ajax');
 });

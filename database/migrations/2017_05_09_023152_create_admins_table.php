@@ -28,6 +28,20 @@ class CreateAdminsTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+
+        Schema::create('admin_role', function (Blueprint $table) {
+            $table->integer('admin_id')->unsigned();
+            $table->integer('role_id')->unsigned();
+            $table->foreign('admin_id')
+                ->references('id')
+                ->on('admins')
+                ->onDelete('cascade');
+            $table->foreign('role_id')
+                ->references('id')
+                ->on('roles')
+                ->onDelete('cascade');
+            $table->primary(['admin_id', 'role_id']);
+        });
     }
 
     /**
@@ -38,5 +52,6 @@ class CreateAdminsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('admins');
+        Schema::dropIfExists('admin_role');
     }
 }

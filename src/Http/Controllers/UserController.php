@@ -3,7 +3,6 @@
 namespace Xcms\Acl\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Xcms\Acl\Http\DataTables\AdminDataTable;
 use Xcms\Acl\Models\Admin;
 use Xcms\Base\Http\Controllers\SystemController;
 
@@ -30,7 +29,10 @@ class UserController extends SystemController
      */
     public function create()
     {
-        //
+        $this->setPageTitle('新增管理员');
+        menu()->setActiveItem('users');
+
+        return view('acl::users.create');
     }
 
     /**
@@ -41,7 +43,11 @@ class UserController extends SystemController
      */
     public function store(Request $request)
     {
-        //
+        $admin = new Admin();
+        $result = $admin->create($request->all());
+        if ($result) {
+            return redirect()->route('users.index')->with('success_msg', '添加管理员成功');
+        }
     }
 
     /**
@@ -82,11 +88,12 @@ class UserController extends SystemController
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return array
      */
     public function destroy($id)
     {
-        //
+        Admin::destroy($id);
+        return ['code' => 200, 'message' => '删除标签成功'];
     }
 
     public function updateStatus($id, $status)

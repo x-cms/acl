@@ -5,11 +5,10 @@
 @endpush
 
 @section('content')
-
     <div class="box box-info">
         <div class="box-header with-border">
             <div class="pull-left">
-                <a class="btn btn-block btn-success" href="{{ route('users.create') }}">
+                <a class="btn btn-block btn-success" href="{{ route('permissions.create') }}">
                     <i class="fa fa-plus"></i>&nbsp;&nbsp;新增
                 </a>
             </div>
@@ -23,9 +22,12 @@
                 </form>
             </div>
         </div>
-        <div id="gridContainer" class="box-body no-padding"></div>
-        <div id="gridToolBarContainer" class="box-footer grid-toolbar-container"></div>
-
+        <div class="box-body no-padding">
+            <div id="gridContainer"></div>
+        </div>
+        <div class="box-footer">
+            <div id="gridToolBarContainer" class="grid-toolbar-container"></div>
+        </div>
     </div>
 @endsection
 
@@ -34,15 +36,15 @@
 <script src="{{ asset('vendor/core/plugins/grid/dlshouwen.grid.js') }}"></script>
 <script src="{{ asset('vendor/core/plugins/grid/i18n/zh-cn.js') }}"></script>
 @endpush
+
 @push('js')
 <script>
     var dtGridColumns = [
-        {id: 'id', title: '用户编号', fastQuery: true, fastQueryType: 'eq'},
-        {id: 'username', title: '用户名称'},
-        {id: 'email', title: 'email'},
+        {id: 'name', title: '权限名称', fastQuery: true},
+        {id: 'slug', title: '别名'},
         {
             id: 'operation', title: '管理操作', resolution: function (value, record, column, grid, dataNo, columnNo) {
-            return "<a href='users/" + record.id + "/edit' class='btn btn-sm btn-warning m-r-5'><i class='fa fa-edit'></i>&nbsp;编辑&nbsp;</a>" +
+            return "<a href='permissions/" + record.id + "/edit' class='btn btn-sm btn-warning m-r-5'><i class='fa fa-edit'></i>&nbsp;编辑&nbsp;</a>" +
                 "<a href='javascript:;' class='btn btn-sm btn-danger' onclick='operateHandle.del(" + record.id + ")'><i class='fa fa-trash-o'></i>&nbsp;删除&nbsp;</a>";
         }
         }
@@ -50,16 +52,15 @@
     var dtGridOption = {
         lang: 'zh-cn',
         loadAll: true,
-        loadURL: '{{ route('users.ajax') }}',
-        exportFileName: '用户列表',
+        loadURL: '{{ route('permissions.ajax') }}',
         columns: dtGridColumns,
         tools: 'refresh|fastQuery',
     };
     var operateHandle = function () {
         function _del(id) {
-            var tpl = '您确定要删除该菜单吗?'
+            var tpl = '您确定要删除该角色吗?'
             $.Confirm({
-                url: '/admin/users/' + id,
+                url: '/admin/permissions/' + id,
                 method: 'DELETE',
                 data: {
                     Id: id
