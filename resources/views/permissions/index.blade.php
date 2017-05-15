@@ -52,7 +52,7 @@
     var dtGridOption = {
         lang: 'zh-cn',
         loadAll: true,
-        loadURL: '{{ route('permissions.ajax') }}',
+        loadURL: '{{ route('admin.permissions.ajax') }}',
         columns: dtGridColumns,
         tools: 'refresh|fastQuery',
     };

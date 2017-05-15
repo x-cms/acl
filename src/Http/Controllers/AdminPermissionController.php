@@ -3,10 +3,10 @@
 namespace Xcms\Acl\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Xcms\Acl\Models\Permission;
+use Xcms\Acl\Models\AdminPermission;
 use Xcms\Base\Http\Controllers\SystemController;
 
-class PermissionController extends SystemController
+class AdminPermissionController extends SystemController
 {
     public function __construct()
     {
@@ -56,7 +56,7 @@ class PermissionController extends SystemController
      */
     public function store(Request $request)
     {
-        $request = Permission::create($request->all());
+        $request = AdminPermission::create($request->all());
         if($request){
             return redirect()->route('permissions.index')->with('success_msg', '添加权限成功');
         }
@@ -65,12 +65,11 @@ class PermissionController extends SystemController
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
      * @return string
      */
     public function ajax()
     {
-        return Permission::all()->toJson();
+        return AdminPermission::all()->toJson();
     }
 
     /**
@@ -81,7 +80,7 @@ class PermissionController extends SystemController
      */
     public function edit($id)
     {
-        $permission = Permission::find($id);
+        $permission = AdminPermission::find($id);
         return view('acl::permissions.edit', compact('permission'));
     }
 
@@ -94,7 +93,7 @@ class PermissionController extends SystemController
      */
     public function update(Request $request, $id)
     {
-        $permission = Permission::find($id);
+        $permission = AdminPermission::find($id);
         $result = $permission->update($request->all());
 
         if($result){
@@ -110,7 +109,7 @@ class PermissionController extends SystemController
      */
     public function destroy($id)
     {
-        Permission::destroy($id);
+        AdminPermission::destroy($id);
         return ['code' => 200, 'message' => '删除权限成功'];
     }
 }

@@ -3,10 +3,10 @@
 namespace Xcms\Acl\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Xcms\Acl\Models\Role;
+use Xcms\Acl\Models\AdminRole;
 use Xcms\Base\Http\Controllers\SystemController;
 
-class RoleController extends SystemController
+class AdminRoleController extends SystemController
 {
     public function __construct()
     {
@@ -18,7 +18,7 @@ class RoleController extends SystemController
 
             $this->breadcrumbs
                 ->addLink('权限管理')
-                ->addLink('角色列表', route('roles.index'));
+                ->addLink('角色列表', route('admin.roles.index'));
 
             return $next($request);
         });
@@ -56,7 +56,7 @@ class RoleController extends SystemController
      */
     public function store(Request $request)
     {
-        $request = Role::create($request->all());
+        $request = AdminRole::create($request->all());
         if($request){
             return redirect()->route('roles.index')->with('success_msg', '添加角色成功');
         }
@@ -64,7 +64,7 @@ class RoleController extends SystemController
 
     public function ajax()
     {
-        return Role::all()->toJson();
+        return AdminRole::all()->toJson();
     }
 
     /**
@@ -77,7 +77,7 @@ class RoleController extends SystemController
     {
         $this->setPageTitle('编辑角色');
         $this->breadcrumbs->addLink('编辑角色');
-        $role = Role::find($id);
+        $role = AdminRole::find($id);
         return view('acl::roles.edit', compact('role'));
     }
 
@@ -90,7 +90,7 @@ class RoleController extends SystemController
      */
     public function update(Request $request, $id)
     {
-        $role = Role::find($id);
+        $role = AdminRole::find($id);
         $result = $role->update($request->all());
 
         if($result){
@@ -102,11 +102,11 @@ class RoleController extends SystemController
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return array|\Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        Role::destroy($id);
+        AdminRole::destroy($id);
         return ['code' => 200, 'message' => '删除标签成功'];
     }
 }

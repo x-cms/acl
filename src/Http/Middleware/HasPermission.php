@@ -15,7 +15,7 @@ class HasPermission
      */
     public function handle($request, Closure $next, ...$permissions)
     {
-        if (!$request->user() || !$request->user()->hasPermission($permissions)) {
+        if (!$request->user('admin') || !$request->user('admin')->hasPermission($permissions)) {
             abort(403);
         }
 

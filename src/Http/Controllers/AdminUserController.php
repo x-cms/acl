@@ -2,11 +2,10 @@
 
 namespace Xcms\Acl\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Xcms\Acl\Models\Admin;
+use Xcms\Acl\Models\AdminUser;
 use Xcms\Base\Http\Controllers\SystemController;
 
-class UserController extends SystemController
+class AdminUserController extends SystemController
 {
     /**
      * Display a listing of the resource.
@@ -43,7 +42,7 @@ class UserController extends SystemController
      */
     public function store(Request $request)
     {
-        $admin = new Admin();
+        $admin = new AdminUser();
         $result = $admin->create($request->all());
         if ($result) {
             return redirect()->route('users.index')->with('success_msg', '添加管理员成功');
@@ -92,7 +91,7 @@ class UserController extends SystemController
      */
     public function destroy($id)
     {
-        Admin::destroy($id);
+        AdminUser::destroy($id);
         return ['code' => 200, 'message' => '删除标签成功'];
     }
 
@@ -102,6 +101,6 @@ class UserController extends SystemController
     }
 
     public function ajax(){
-        return Admin::all()->toJson();
+        return AdminUser::all()->toJson();
     }
 }

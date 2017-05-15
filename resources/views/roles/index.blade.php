@@ -8,7 +8,7 @@
     <div class="box box-info">
         <div class="box-header with-border">
             <div class="pull-left">
-                <a class="btn btn-block btn-success" href="{{ route('roles.create') }}">
+                <a class="btn btn-block btn-success" href="{{ route('admin.roles.create') }}">
                     <i class="fa fa-plus"></i>&nbsp;&nbsp;新增
                 </a>
             </div>
@@ -52,7 +52,7 @@
     var dtGridOption = {
         lang: 'zh-cn',
         loadAll: true,
-        loadURL: '{{ route('roles.ajax') }}',
+        loadURL: '{{ route('admin.roles.ajax') }}',
         columns: dtGridColumns,
         tools: 'refresh|fastQuery',
     };

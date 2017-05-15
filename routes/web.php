@@ -18,13 +18,21 @@ Route::group(['prefix' => 'admin'], function (Router $router) {
     $router->post('login', 'AuthController@login');
     $router->get('logout', 'AuthController@logout')->name('admin.logout');
 
-    $router->resource('users', 'UserController');
-    $router->post('users/ajax', 'UserController@ajax')->name('users.ajax');
-    $router->post('users/update-status/{id}/{status}', 'UserController@updateStatus')->name('users.update-status');
+    $router->resource('users', 'AdminUserController');
+    $router->post('users/ajax', 'AdminUserController@ajax')->name('admin.users.ajax');
+    $router->post('users/update-status/{id}/{status}', 'AdminUserController@updateStatus')->name('users.update-status');
 
-    $router->resource('roles', 'RoleController');
-    $router->post('roles/ajax', 'RoleController@ajax')->name('roles.ajax');
+    $router->group(['prefix' => 'roles'], function (Router $router) {
+        $router->get('', 'AdminRoleController@index')
+            ->name('admin.roles.index')
+            ->middleware('has-permission:view-roles');
+        $router->get('/create', 'AdminRoleController@create')
+            ->name('admin.roles.create')
+            ->middleware('has-permission:create-roles');
 
-    $router->resource('permissions', 'PermissionController');
-    $router->post('permissions/ajax', 'PermissionController@ajax')->name('permissions.ajax');
+    });
+    $router->post('roles/ajax', 'AdminRoleController@ajax')->name('admin.roles.ajax');
+
+    $router->resource('permissions', 'AdminPermissionController');
+    $router->post('permissions/ajax', 'AdminPermissionController@ajax')->name('admin.permissions.ajax');
 });

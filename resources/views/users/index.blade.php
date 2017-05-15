@@ -50,7 +50,7 @@
     var dtGridOption = {
         lang: 'zh-cn',
         loadAll: true,
-        loadURL: '{{ route('users.ajax') }}',
+        loadURL: '{{ route('admin.users.ajax') }}',
         exportFileName: '用户列表',
         columns: dtGridColumns,
         tools: 'refresh|fastQuery',

@@ -3,6 +3,8 @@
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Xcms\Acl\Http\Middleware\Authenticate;
+use Xcms\Acl\Http\Middleware\HasPermission;
+use Xcms\Acl\Http\Middleware\HasRole;
 use Xcms\Acl\Http\Middleware\RedirectIfAuthenticated;
 
 class MiddlewareServiceProvider extends ServiceProvider
@@ -21,5 +23,7 @@ class MiddlewareServiceProvider extends ServiceProvider
 
         $router->aliasMiddleware('auth.admin', Authenticate::class);
         $router->aliasMiddleware('guest.admin', RedirectIfAuthenticated::class);
+        $router->aliasMiddleware('has-role', HasRole::class);
+        $router->aliasMiddleware('has-permission', HasPermission::class);
     }
 }

@@ -3,7 +3,7 @@
 namespace Xcms\Acl\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Xcms\Acl\Models\Admin;
+use Xcms\Acl\Models\AdminUser;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -24,9 +24,11 @@ class AuthServiceProvider extends ServiceProvider
         config([
             'auth.providers.admins' => [
                 'driver' => 'eloquent',
-                'model' => Admin::class
+                'model' => AdminUser::class
             ]
         ]);
+
+//        $this->registerPolicies();
 
     }
 
