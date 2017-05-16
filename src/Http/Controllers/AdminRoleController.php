@@ -62,6 +62,7 @@ class AdminRoleController extends SystemController
      */
     public function store(Request $request)
     {
+        dd($request->all());
         $request = AdminRole::create($request->all());
         if($request){
             return redirect()->route('admin.roles.index')->with('success_msg', '添加角色成功');

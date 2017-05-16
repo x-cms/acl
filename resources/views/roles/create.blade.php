@@ -1,6 +1,7 @@
 @extends('base::layouts.master')
 
 @section('content')
+    <!--suppress JSCheckFunctionSignatures -->
     <div class="box box-primary">
         <div class="box-header with-border">
             <h3 class="box-title">基本信息</h3>
@@ -31,12 +32,24 @@
                 <div class="form-group last">
                     <label class="col-md-2 control-label">权限设置</label>
                     <div class="col-md-10">
+                        <div class="row role p-b-20">
+                            <div class="col-lg-2 col-md-3">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" data-all> 选择全部
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                         @foreach($permissions as $permission)
                             <div class="row role p-t-20 p-b-20">
                                 <div class="col-lg-2 col-md-3">
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox"> {{ array_get($permission, 'name') }}
+                                            <input type="checkbox"
+                                                   name="permission[]"
+                                                   value="{{ array_get($permission, 'id') }}"
+                                                   data-parent> {{ array_get($permission, 'name') }}
                                         </label>
                                     </div>
                                 </div>
@@ -44,7 +57,11 @@
                                     @foreach(array_get($permission, 'child') as $child)
                                         <div class="checkbox col-lg-2 col-md-3 col-sm-4">
                                             <label>
-                                                <input type="checkbox"> {{ array_get($child, 'name') }}
+                                                <input type="checkbox"
+                                                       name="permission[]"
+                                                       value="{{ array_get($child, 'id') }}"
+                                                       data-parent-id="{{ array_get($permission, 'id') }}"
+                                                       data-sub> {{ array_get($child, 'name') }}
                                             </label>
                                         </div>
                                     @endforeach
@@ -64,3 +81,43 @@
         </form>
     </div>
 @endsection
+
+@push('js')
+<script>
+    $("input[data-all]").on("change", function(e) {
+        var $this = $(this),
+            isCheck = $this.is(':checked'),
+            list = $(":checkbox")
+        ;
+        if (isCheck) {
+            list.prop("checked", true);
+        } else {
+            list.prop("checked", false);
+        }
+    });
+
+    $("input[data-parent]").on("change", function () {
+        var $this = $(this),
+            parentId = $this.val(),
+            isCheck = $this.is(':checked'),
+            list = $("input[data-parent-id='" + parentId + "']");
+        if (isCheck) {
+            list.prop("checked", true);
+        } else {
+            list.prop("checked", false);
+        }
+    });
+
+    $("input[data-sub]").on("change", function () {
+        var $this = $(this),
+            parentId = $this.attr("data-parent-id"),
+            isCheck = $this.is(':checked');
+        list = $("input[value='" + parentId + "']")
+        if (isCheck) {
+            list.prop("checked", true);
+        } else {
+            list.prop("checked", false);
+        }
+    });
+</script>
+@endpush
