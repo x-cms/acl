@@ -18,7 +18,7 @@ class AdminPermissionController extends SystemController
 
             $this->breadcrumbs
                 ->addLink('权限管理')
-                ->addLink('权限列表', route('permissions.index'));
+                ->addLink('权限列表', route('admin.permissions.index'));
 
             return $next($request);
         });
@@ -28,10 +28,13 @@ class AdminPermissionController extends SystemController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return array|\Illuminate\Http\Response|string
      */
-    public function index()
+    public function index(Request $request)
     {
+        if($request->isMethod('post')){
+            return AdminPermission::renderAsJson();
+        }
         $this->setPageTitle('权限列表');
         return view('acl::permissions.index');
     }
@@ -45,7 +48,9 @@ class AdminPermissionController extends SystemController
     {
         $this->setPageTitle('创建角色');
         $this->breadcrumbs->addLink('创建角色');
-        return view('acl::permissions.create');
+        $selects = AdminPermission::where('parent_id', 0)->get();
+
+        return view('acl::permissions.create', compact('selects'));
     }
 
     /**
@@ -58,18 +63,8 @@ class AdminPermissionController extends SystemController
     {
         $request = AdminPermission::create($request->all());
         if($request){
-            return redirect()->route('permissions.index')->with('success_msg', '添加权限成功');
+            return redirect()->route('admin.permissions.index')->with('success_msg', '添加权限成功');
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @return string
-     */
-    public function ajax()
-    {
-        return AdminPermission::all()->toJson();
     }
 
     /**
@@ -81,7 +76,9 @@ class AdminPermissionController extends SystemController
     public function edit($id)
     {
         $permission = AdminPermission::find($id);
-        return view('acl::permissions.edit', compact('permission'));
+        $selects = AdminPermission::where('parent_id', 0)->get();
+
+        return view('acl::permissions.edit', compact('permission', 'selects'));
     }
 
     /**
@@ -97,7 +94,7 @@ class AdminPermissionController extends SystemController
         $result = $permission->update($request->all());
 
         if($result){
-            return redirect()->route('permissions.index')->with('success_msg', '更新权限成功');
+            return redirect()->route('admin.permissions.index')->with('success_msg', '更新权限成功');
         }
     }
 

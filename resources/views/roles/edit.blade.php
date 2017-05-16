@@ -5,7 +5,7 @@
         <div class="box-header with-border">
             <h3 class="box-title">基本信息</h3>
         </div>
-        <form class="form-horizontal form-bordered" method="post" action="{{ route('roles.update', ['id' => $role->id]) }}">
+        <form class="form-horizontal form-bordered" method="post" action="{{ route('admin.roles.update', ['id' => $role->id]) }}">
             <input type="hidden" name="_method" value="PATCH">
             {{ csrf_field() }}
             <div class="box-body">
@@ -35,7 +35,7 @@
             <div class="box-footer">
                 <div class="col-md-2"></div>
                 <div class="col-md-6">
-                    <a class="btn btn-primary" href="{{ route('roles.index') }}">返回列表</a>
+                    <a class="btn btn-primary" href="{{ route('admin.roles.index') }}">返回列表</a>
                     <button type="submit" class="btn btn-primary">确认提交</button>
                 </div>
             </div>

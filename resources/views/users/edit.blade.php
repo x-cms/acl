@@ -5,31 +5,31 @@
         <div class="box-header with-border">
             <h3 class="box-title">基本信息</h3>
         </div>
-        <form class="form-horizontal form-bordered" method="post" action="{{ route('admin.users.store') }}">
+        <form class="form-horizontal form-bordered" method="post" action="{{ route('admin.users.update', ['id' => $user->id]) }}">
             {{ csrf_field() }}
             <div class="box-body">
                 <div class="form-group">
                     <label class="col-md-2 control-label">用户名</label>
                     <div class="col-md-6">
-                        <input type="text" class="form-control" name="username" autocomplete="off">
+                        <input type="text" class="form-control" name="username" autocomplete="off" value="{{ $user->username }}">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-md-2 control-label">密码</label>
                     <div class="col-md-6">
-                        <input type="password" class="form-control" name="password" autocomplete="off">
+                        <input type="password" class="form-control" name="password" autocomplete="off" value="{{ $user->password }}">
                     </div>
                 </div>
                 <div class="form-group last">
                     <label class="col-md-2 control-label">邮箱</label>
                     <div class="col-md-6">
-                        <input type="text" class="form-control" name="email">
+                        <input type="text" class="form-control" name="email" value="{{ $user->email }}">
                     </div>
                 </div>
                 <div class="form-group last">
                     <label class="col-md-2 control-label">手机号</label>
                     <div class="col-md-6">
-                        <input type="text" class="form-control" name="phone">
+                        <input type="text" class="form-control" name="phone" value="{{ $user->phone }}">
                     </div>
                 </div>
             </div>

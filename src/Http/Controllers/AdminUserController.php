@@ -2,21 +2,41 @@
 
 namespace Xcms\Acl\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Xcms\Acl\Models\AdminUser;
 use Xcms\Base\Http\Controllers\SystemController;
 
 class AdminUserController extends SystemController
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->middleware(function (Request $request, $next) {
+
+            menu()->setActiveItem('users');
+
+            $this->breadcrumbs
+                ->addLink('权限管理')
+                ->addLink('管理员', route('admin.users.index'));
+
+            return $next($request);
+        });
+
+    }
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public function index()
+    public function index(Request $request)
     {
+        if($request->isMethod('post')){
+            return AdminUser::all()->toJson();
+        }
+
         $this->setPageTitle('管理员列表');
         $this->breadcrumbs->addLink('管理员');
-        menu()->setActiveItem('users');
 
         return view('acl::users.index');
     }
@@ -29,7 +49,6 @@ class AdminUserController extends SystemController
     public function create()
     {
         $this->setPageTitle('新增管理员');
-        menu()->setActiveItem('users');
 
         return view('acl::users.create');
     }
@@ -43,9 +62,14 @@ class AdminUserController extends SystemController
     public function store(Request $request)
     {
         $admin = new AdminUser();
-        $result = $admin->create($request->all());
+        $admin->username = $request->username;
+        $admin->password = bcrypt($request->password);
+        $admin->email = $request->email;
+        $admin->phone = $request->phone;
+
+        $result = $admin->save();
         if ($result) {
-            return redirect()->route('users.index')->with('success_msg', '添加管理员成功');
+            return redirect()->route('admin.users.index')->with('success_msg', '添加管理员成功');
         }
     }
 
@@ -68,7 +92,8 @@ class AdminUserController extends SystemController
      */
     public function edit($id)
     {
-        //
+        $user = AdminUser::find($id);
+        return view('acl::users.edit', compact('user'));
     }
 
     /**
@@ -80,7 +105,16 @@ class AdminUserController extends SystemController
      */
     public function update(Request $request, $id)
     {
-        //
+        $admin = AdminUser::find($id);
+        $admin->username = $request->username;
+        $admin->password = bcrypt($request->password);
+        $admin->email = $request->email;
+        $admin->phone = $request->phone;
+
+        $result = $admin->save();
+        if ($result) {
+            return redirect()->route('admin.users.index')->with('success_msg', '添加管理员成功');
+        }
     }
 
     /**
@@ -100,7 +134,4 @@ class AdminUserController extends SystemController
         //
     }
 
-    public function ajax(){
-        return AdminUser::all()->toJson();
-    }
 }

@@ -29,6 +29,14 @@ trait AclTrait
     }
 
     /**
+     * 用户是否超级管理员
+     */
+    public function isSuperAdmin()
+    {
+        return $this->is_supper;
+    }
+
+    /**
      * 检查用户是否具有给定的角色
      *
      * @param string $slug
@@ -37,6 +45,10 @@ trait AclTrait
      */
     public function hasRole($slug)
     {
+        if ($this->isSuperAdmin()) {
+            return true;
+        }
+
         $slug = strtolower($slug);
         foreach ($this->roles as $role) {
             if ($role->slug == $slug) {
@@ -118,14 +130,12 @@ trait AclTrait
      */
     public function hasPermission($permission)
     {
+        if ($this->isSuperAdmin()) {
+            return true;
+        }
+
         $can = false;
         foreach ($this->roles as $role) {
-            if ($role->special === 'no-access') {
-                return false;
-            }
-            if ($role->special === 'all-access') {
-                return true;
-            }
             if ($role->hasPermission($permission)) {
                 $can = true;
             }
@@ -175,7 +185,7 @@ trait AclTrait
         // Handle isRoleslug() methods
         if (starts_with($method, 'is') and $method !== 'is') {
             $role = substr($method, 2);
-            return $this->isRole($role);
+            return $this->hasRole($role);
         }
         // Handle canDoSomething() methods
         if (starts_with($method, 'can') and $method !== 'can') {

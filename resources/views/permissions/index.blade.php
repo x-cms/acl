@@ -8,7 +8,7 @@
     <div class="box box-info">
         <div class="box-header with-border">
             <div class="pull-left">
-                <a class="btn btn-block btn-success" href="{{ route('permissions.create') }}">
+                <a class="btn btn-block btn-success" href="{{ route('admin.permissions.create') }}">
                     <i class="fa fa-plus"></i>&nbsp;&nbsp;新增
                 </a>
             </div>
@@ -16,7 +16,7 @@
                 <form class="search-dtGrid-form" action="">
                     <div class="form-group">
                         <input type="text" id="keyword" name="keyword" class="form-control"
-                               placeholder="请输入分类名称作为关键字进行搜索" autocomplete="off">
+                               placeholder="" autocomplete="off">
                         <a href="javascript:;" class="btn btn-search"><i class="fa fa-search"></i></a>
                     </div>
                 </form>
@@ -44,7 +44,7 @@
         {id: 'slug', title: '别名'},
         {
             id: 'operation', title: '管理操作', resolution: function (value, record, column, grid, dataNo, columnNo) {
-            return "<a href='permissions/" + record.id + "/edit' class='btn btn-sm btn-warning m-r-5'><i class='fa fa-edit'></i>&nbsp;编辑&nbsp;</a>" +
+            return "<a href='permissions/edit/" + record.id + "' class='btn btn-sm btn-warning m-r-5'><i class='fa fa-edit'></i>&nbsp;编辑&nbsp;</a>" +
                 "<a href='javascript:;' class='btn btn-sm btn-danger' onclick='operateHandle.del(" + record.id + ")'><i class='fa fa-trash-o'></i>&nbsp;删除&nbsp;</a>";
         }
         }
@@ -52,7 +52,7 @@
     var dtGridOption = {
         lang: 'zh-cn',
         loadAll: true,
-        loadURL: '{{ route('admin.permissions.ajax') }}',
+        loadURL: '{{ route('admin.permissions.index') }}',
         columns: dtGridColumns,
         tools: 'refresh|fastQuery',
     };

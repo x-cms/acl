@@ -1,6 +1,9 @@
 <?php namespace Xcms\Acl\Providers;
 
+use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
+use Nestable\Facades\NestableService;
+use Nestable\NestableServiceProvider;
 
 class ModuleServiceProvider extends ServiceProvider
 {
@@ -49,6 +52,10 @@ class ModuleServiceProvider extends ServiceProvider
         $this->app->register(RouteServiceProvider::class);
         $this->app->register(MiddlewareServiceProvider::class);
         $this->app->register(AuthServiceProvider::class);
+        $this->app->register(NestableServiceProvider::class);
+
+        $loader = AliasLoader::getInstance();
+        $loader->alias('Nestable', NestableService::class);
 
     }
 

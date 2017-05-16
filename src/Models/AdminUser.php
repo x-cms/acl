@@ -26,4 +26,8 @@ class AdminUser extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    protected $casts = [
+        'is_supper' => 'boolean',
+    ];
 }

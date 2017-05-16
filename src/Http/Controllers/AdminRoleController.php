@@ -3,6 +3,7 @@
 namespace Xcms\Acl\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Xcms\Acl\Models\AdminPermission;
 use Xcms\Acl\Models\AdminRole;
 use Xcms\Base\Http\Controllers\SystemController;
 
@@ -28,10 +29,13 @@ class AdminRoleController extends SystemController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|string
      */
-    public function index()
+    public function index(Request $request)
     {
+        if($request->isMethod('post')){
+            return AdminRole::all()->toJson();
+        }
         $this->setPageTitle('角色列表');
         return view('acl::roles.index');
     }
@@ -45,7 +49,9 @@ class AdminRoleController extends SystemController
     {
         $this->setPageTitle('创建角色');
         $this->breadcrumbs->addLink('创建角色');
-        return view('acl::roles.create');
+        $permissions = AdminPermission::renderAsArray();
+
+        return view('acl::roles.create', compact('permissions'));
     }
 
     /**
@@ -58,13 +64,8 @@ class AdminRoleController extends SystemController
     {
         $request = AdminRole::create($request->all());
         if($request){
-            return redirect()->route('roles.index')->with('success_msg', '添加角色成功');
+            return redirect()->route('admin.roles.index')->with('success_msg', '添加角色成功');
         }
-    }
-
-    public function ajax()
-    {
-        return AdminRole::all()->toJson();
     }
 
     /**
@@ -94,7 +95,7 @@ class AdminRoleController extends SystemController
         $result = $role->update($request->all());
 
         if($result){
-            return redirect()->route('roles.index')->with('success_msg', '更新角色成功');
+            return redirect()->route('admin.roles.index')->with('success_msg', '更新角色成功');
         }
     }
 
