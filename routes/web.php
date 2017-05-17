@@ -18,7 +18,7 @@ Route::group(['prefix' => 'admin'], function (Router $router) {
     $router->post('login', 'AuthController@login');
     $router->get('logout', 'AuthController@logout')->name('admin.logout');
 
-    $router->group(['prefix' => 'users'], function (Router $router) {
+    $router->group(['prefix' => 'users', 'middleware' => 'auth.admin'], function (Router $router) {
         $router->get('', 'AdminUserController@index')
             ->name('admin.users.index')
             ->middleware('has-permission:view-admin-users');
@@ -48,7 +48,7 @@ Route::group(['prefix' => 'admin'], function (Router $router) {
             ->middleware('has-permission:delete-admin-users');
     });
 
-    $router->group(['prefix' => 'roles'], function (Router $router) {
+    $router->group(['prefix' => 'roles', 'middleware' => 'auth.admin'], function (Router $router) {
         $router->get('', 'AdminRoleController@index')
             ->name('admin.roles.index')
             ->middleware('has-permission:view-admin-roles');
@@ -78,7 +78,7 @@ Route::group(['prefix' => 'admin'], function (Router $router) {
             ->middleware('has-permission:delete-admin-roles');
     });
 
-    $router->group(['prefix' => 'permissions'], function (Router $router) {
+    $router->group(['prefix' => 'permissions', 'middleware' => 'auth.admin'], function (Router $router) {
         $router->get('', 'AdminPermissionController@index')
             ->name('admin.permissions.index')
             ->middleware('has-permission:view-admin-permissions');

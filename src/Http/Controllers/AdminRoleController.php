@@ -62,9 +62,14 @@ class AdminRoleController extends SystemController
      */
     public function store(Request $request)
     {
-        dd($request->all());
-        $request = AdminRole::create($request->all());
-        if($request){
+        $role = new AdminRole();
+        $role->name = $request->name;
+        $role->slug = $request->slug;
+        $role->save();
+
+        $result = $role->permissions()->sync($request->permissions);
+
+        if($result){
             return redirect()->route('admin.roles.index')->with('success_msg', '添加角色成功');
         }
     }
@@ -79,8 +84,11 @@ class AdminRoleController extends SystemController
     {
         $this->setPageTitle('编辑角色');
         $this->breadcrumbs->addLink('编辑角色');
-        $role = AdminRole::find($id);
-        return view('acl::roles.edit', compact('role'));
+        $role = AdminRole::with('permissions')->find($id);
+        $permissions = AdminPermission::renderAsArray();
+        $role->permissions = $role->permissions()->allRelatedIds()->toArray();
+
+        return view('acl::roles.edit', compact('role', 'permissions'));
     }
 
     /**
@@ -93,8 +101,11 @@ class AdminRoleController extends SystemController
     public function update(Request $request, $id)
     {
         $role = AdminRole::find($id);
-        $result = $role->update($request->all());
+        $role->name = $request->name;
+        $role->slug = $request->slug;
+        $role->permissions()->sync($request->permissions);
 
+        $result = $role->save();
         if($result){
             return redirect()->route('admin.roles.index')->with('success_msg', '更新角色成功');
         }
@@ -108,7 +119,9 @@ class AdminRoleController extends SystemController
      */
     public function destroy($id)
     {
-        AdminRole::destroy($id);
+        $role = AdminRole::find($id);
+        $role->permissions()->detach();
+        $role->destroy($id);
         return ['code' => 200, 'message' => '删除标签成功'];
     }
 }

@@ -36,7 +36,8 @@
                             <div class="col-lg-2 col-md-3">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" data-all> 选择全部
+                                        <input type="checkbox" data-all>
+                                        选择全部
                                     </label>
                                 </div>
                             </div>
@@ -47,22 +48,32 @@
                                     <div class="checkbox">
                                         <label>
                                             <input type="checkbox"
-                                                   name="permission[]"
+                                                   name="permissions[]"
                                                    value="{{ array_get($permission, 'id') }}"
-                                                   data-parent> {{ array_get($permission, 'name') }}
+                                                   data-group> {{ array_get($permission, 'name') }}
                                         </label>
                                     </div>
                                 </div>
                                 <div class="col-lg-10 col-md-9">
                                     @foreach(array_get($permission, 'child') as $child)
-                                        <div class="checkbox col-lg-2 col-md-3 col-sm-4">
-                                            <label>
+                                        <div class="checkbox">
+                                            <label class="col-lg-2 col-md-3 col-sm-4">
                                                 <input type="checkbox"
-                                                       name="permission[]"
+                                                       name="permissions[]"
                                                        value="{{ array_get($child, 'id') }}"
-                                                       data-parent-id="{{ array_get($permission, 'id') }}"
-                                                       data-sub> {{ array_get($child, 'name') }}
+                                                       data-group-id="{{ array_get($permission, 'id') }}"
+                                                       data-parent> {{ array_get($child, 'name') }}
                                             </label>
+                                            @foreach(array_get($child, 'child') as $item)
+                                                <label class="col-lg-2 col-md-3 col-sm-4">
+                                                    <input type="checkbox"
+                                                           name="permissions[]"
+                                                           value="{{ array_get($item, 'id') }}"
+                                                           data-parent-id="{{ array_get($child, 'id') }}"
+                                                           data-group-id="{{ array_get($permission, 'id') }}"
+                                                           data-sub> {{ array_get($item, 'name') }}
+                                                </label>
+                                            @endforeach
                                         </div>
                                     @endforeach
                                 </div>
@@ -84,11 +95,23 @@
 
 @push('js')
 <script>
-    $("input[data-all]").on("change", function(e) {
+    $("input[data-all]").on("change", function (e) {
         var $this = $(this),
             isCheck = $this.is(':checked'),
             list = $(":checkbox")
         ;
+        if (isCheck) {
+            list.prop("checked", true);
+        } else {
+            list.prop("checked", false);
+        }
+    });
+
+    $("input[data-group]").on("change", function () {
+        var $this = $(this),
+            groupId = $this.val(),
+            isCheck = $this.is(':checked'),
+            list = $("input[data-group-id='" + groupId + "']");
         if (isCheck) {
             list.prop("checked", true);
         } else {

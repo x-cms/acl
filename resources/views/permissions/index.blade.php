@@ -39,9 +39,9 @@
 
 @push('js')
 <script>
-    var dtGridColumns = [
+    let dtGridColumns = [
         {id: 'name', title: '权限名称', fastQuery: true},
-        {id: 'slug', title: '别名'},
+        {id: 'slug', title: '别名', hideType:'lg|md|sm|xs'},
         {
             id: 'operation', title: '管理操作', resolution: function (value, record, column, grid, dataNo, columnNo) {
             return "<a href='permissions/edit/" + record.id + "' class='btn btn-sm btn-warning m-r-5'><i class='fa fa-edit'></i>&nbsp;编辑&nbsp;</a>" +
@@ -49,16 +49,16 @@
         }
         }
     ];
-    var dtGridOption = {
-        lang: 'zh-cn',
+    let dtGridOption = {
+        isTreeGrid: true,
         loadAll: true,
         loadURL: '{{ route('admin.permissions.index') }}',
         columns: dtGridColumns,
         tools: 'refresh|fastQuery',
     };
-    var operateHandle = function () {
+    let operateHandle = function () {
         function _del(id) {
-            var tpl = '您确定要删除该角色吗?'
+            let tpl = '您确定要删除该角色吗?';
             $.Confirm({
                 url: '/admin/permissions/' + id,
                 method: 'DELETE',
@@ -73,7 +73,7 @@
             del: _del
         }
     }();
-    var grid = $.fn.dtGrid.init(dtGridOption);
+    let grid = $.fn.dtGrid.init(dtGridOption);
     $(function () {
         grid.load();
     });
