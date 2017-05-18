@@ -41,7 +41,7 @@
 <script>
     let dtGridColumns = [
         {id: 'name', title: '权限名称', fastQuery: true},
-        {id: 'slug', title: '别名', hideType:'lg|md|sm|xs'},
+        {id: 'slug', title: '别名', },
         {
             id: 'operation', title: '管理操作', resolution: function (value, record, column, grid, dataNo, columnNo) {
             return "<a href='permissions/edit/" + record.id + "' class='btn btn-sm btn-warning m-r-5'><i class='fa fa-edit'></i>&nbsp;编辑&nbsp;</a>" +

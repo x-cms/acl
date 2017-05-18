@@ -3,6 +3,7 @@
 namespace Xcms\Acl\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Xcms\Acl\Models\AdminRole;
 use Xcms\Acl\Models\AdminUser;
 use Xcms\Base\Http\Controllers\SystemController;
 
@@ -36,7 +37,6 @@ class AdminUserController extends SystemController
         }
 
         $this->setPageTitle('管理员列表');
-        $this->breadcrumbs->addLink('管理员');
 
         return view('acl::users.index');
     }
@@ -49,8 +49,9 @@ class AdminUserController extends SystemController
     public function create()
     {
         $this->setPageTitle('新增管理员');
+        $roles = AdminRole::all();
 
-        return view('acl::users.create');
+        return view('acl::users.create', compact('roles'));
     }
 
     /**
@@ -66,8 +67,9 @@ class AdminUserController extends SystemController
         $admin->password = bcrypt($request->password);
         $admin->email = $request->email;
         $admin->phone = $request->phone;
+        $admin->save();
 
-        $result = $admin->save();
+        $result = $admin->roles()->sync($request->roles);
         if ($result) {
             return redirect()->route('admin.users.index')->with('success_msg', '添加管理员成功');
         }
@@ -93,7 +95,10 @@ class AdminUserController extends SystemController
     public function edit($id)
     {
         $user = AdminUser::find($id);
-        return view('acl::users.edit', compact('user'));
+        $roles = AdminRole::all();
+        $user->roles = $user->roles()->allRelatedIds()->toArray();
+
+        return view('acl::users.edit', compact('user', 'roles'));
     }
 
     /**
@@ -110,8 +115,10 @@ class AdminUserController extends SystemController
         $admin->password = bcrypt($request->password);
         $admin->email = $request->email;
         $admin->phone = $request->phone;
+        $admin->save();
 
-        $result = $admin->save();
+        $result = $admin->roles()->sync($request->roles);
+
         if ($result) {
             return redirect()->route('admin.users.index')->with('success_msg', '添加管理员成功');
         }
@@ -125,7 +132,9 @@ class AdminUserController extends SystemController
      */
     public function destroy($id)
     {
-        AdminUser::destroy($id);
+        $user = AdminUser::find($id);
+        $user->roles()->detach();
+        $user->destroy($id);
         return ['code' => 200, 'message' => '删除标签成功'];
     }
 
