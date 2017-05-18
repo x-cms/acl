@@ -28,7 +28,8 @@ class AdminUserController extends SystemController
 
     /**
      * Display a listing of the resource.
-     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|string
      */
     public function index(Request $request)
     {
@@ -69,7 +70,7 @@ class AdminUserController extends SystemController
         $admin->phone = $request->phone;
         $admin->save();
 
-        $result = $admin->roles()->sync($request->roles);
+        $result = $admin->assignRole($request->roles);
         if ($result) {
             return redirect()->route('admin.users.index')->with('success_msg', '添加管理员成功');
         }
@@ -117,7 +118,7 @@ class AdminUserController extends SystemController
         $admin->phone = $request->phone;
         $admin->save();
 
-        $result = $admin->roles()->sync($request->roles);
+        $result = $admin->assignRole($request->roles);
 
         if ($result) {
             return redirect()->route('admin.users.index')->with('success_msg', '添加管理员成功');
@@ -133,7 +134,7 @@ class AdminUserController extends SystemController
     public function destroy($id)
     {
         $user = AdminUser::find($id);
-        $user->roles()->detach();
+        $user->revokeAllRoles;
         $user->destroy($id);
         return ['code' => 200, 'message' => '删除标签成功'];
     }

@@ -41,7 +41,7 @@
                     <div class="col-md-6">
                         <select name="roles[]" class="form-control select2" multiple="multiple" data-placeholder="请选择">
                             @foreach($roles as $role)
-                                <option value="{{ $role->id }}" {{ $user->roles->id == $role->id ? 'checked' : '' }}>{{ $role->name }}</option>
+                                <option value="{{ $role->id }}" {{ in_array($role->id, $user->roles) ? 'selected' : '' }}>{{ $role->name }}</option>
                             @endforeach
                         </select>
                     </div>
