@@ -1,7 +1,6 @@
 @extends('base::layouts.master')
 
 @section('content')
-    <!--suppress JSCheckFunctionSignatures -->
     <div class="box box-primary">
         <div class="box-header with-border">
             <h3 class="box-title">基本信息</h3>
