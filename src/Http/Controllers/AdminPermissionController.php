@@ -48,9 +48,11 @@ class AdminPermissionController extends SystemController
     {
         $this->setPageTitle('创建角色');
         $this->breadcrumbs->addLink('创建角色');
-        $selects = AdminPermission::where('parent_id', 0)->get();
+        $permissions = AdminPermission::attr(['name' => 'parent_id', 'class' => 'form-control select2'])
+            ->placeholder(0, '顶级权限')
+            ->renderAsDropdown();
 
-        return view('acl::permissions.create', compact('selects'));
+        return view('acl::permissions.create', compact('permissions'));
     }
 
     /**
@@ -76,9 +78,12 @@ class AdminPermissionController extends SystemController
     public function edit($id)
     {
         $permission = AdminPermission::find($id);
-        $selects = AdminPermission::where('parent_id', 0)->get();
+        $permissions = AdminPermission::attr(['name' => 'parent_id', 'class' => 'form-control select2'])
+            ->placeholder(0, '顶级权限')
+            ->selected($permission->parent_id)
+            ->renderAsDropdown();
 
-        return view('acl::permissions.edit', compact('permission', 'selects'));
+        return view('acl::permissions.edit', compact('permission', 'permissions'));
     }
 
     /**

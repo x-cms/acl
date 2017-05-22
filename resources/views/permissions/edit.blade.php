@@ -31,14 +31,9 @@
                     </div>
                 </div>
                 <div class="form-group last">
-                    <label class="col-md-2 control-label">别名</label>
+                    <label class="col-md-2 control-label">上级权限</label>
                     <div class="col-md-6">
-                        <select name="parent_id" class="form-control select2">
-                            <option value="0">顶级权限</option>
-                            @foreach($selects as $select)
-                                <option value="{{ $select->id }}" {{ $permission->parent_id == $select->id ? 'selected' : '' }}>{{ $select->name }}</option>
-                            @endforeach
-                        </select>
+                        {!! $permissions !!}
                     </div>
                 </div>
             </div>
